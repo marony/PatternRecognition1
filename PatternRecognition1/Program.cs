@@ -116,7 +116,7 @@ namespace PatternRecognition1
 			Events.Run();
 		}
 		/// <summary>
-		/// ライフゲームメインロジック
+		/// 識別関数(g)メインロジック
 		/// </summary>
 		/// <param name="data"></param>
 		/// <returns></returns>
@@ -126,13 +126,12 @@ namespace PatternRecognition1
 			{
 				var pp = data[i];
 				var p = pp.Item3;
-				var px = 0;
-				for (var j = 0; j < p.Count; ++j)
-					px += Math.Abs(p[j] - userData[j]) ^ 2;
-				var d = Math.Sqrt(px);
+				var d = -0.5f * p.Aggregate((acc, succ) => acc + Math.Abs(succ) * Math.Abs(succ));	// w0 * x0(≡1), w0 = -1/2 * ||pi||^2
+				for (var j = 0; j < p.Count; ++j)	// Σ(w1～wd) * (x1～xd)
+					d += p[j] * userData[j];
 				data[i] = Tuple.Create(pp.Item1, (float)d, pp.Item3);
 			}
-			return data.OrderBy((x) => x.Item2).ToList();
+			return data.OrderByDescending((x) => x.Item2).ToList();
 		}
 
 		/// <summary>
