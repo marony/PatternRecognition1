@@ -27,7 +27,7 @@ namespace PatternRecognition1
 		const int Margin = 20;
 
 		// 学習係数
-		const double P = 1.0;
+		const double P = 0.3;
 
 		// スリープ
 		const int Sleep = 0;
@@ -150,6 +150,9 @@ namespace PatternRecognition1
 					d += p[j] * userData[j];
 				data[i] = Tuple.Create(pp.Item1, (double)d, pp.Item3);
 			}
+            Console.WriteLine("----------");
+            foreach (var p in data)
+                Console.WriteLine("{0} = {1}", p.Item1, p.Item2);
 			return data.OrderByDescending((x) => x.Item2).ToList();
 		}
 
@@ -163,7 +166,7 @@ namespace PatternRecognition1
 			var pj = data[0].Item3;		// 今はjだけど
 			var pi = data[sel].Item3;	// iが正しい
 			// 学習する
-			for (int i = 0; i < userData[i]; ++i)
+			for (int i = 0; i < userData.Count; ++i)
 			{
 				pi[i] = pi[i] + P * userData[i];
 				pj[i] = pj[i] - P * userData[i];
